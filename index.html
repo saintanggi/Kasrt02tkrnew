@@ -7,7 +7,6 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
 <script>
@@ -49,7 +48,7 @@ tailwind.config = {
         <i class="fa-solid fa-house-chimney"></i>
       </div>
       <div>
-        <h1 class="font-fredoka font-bold text-[22px] leading-none tracking-tight">KAS RT<span class="text-[#FF6B6B]">.</span><span class="ml-2 text-[10px] bg-emerald-500 text-white px-2 py-1 rounded-full">v3.1 Firebase</span></h1>
+        <h1 class="font-fredoka font-bold text-[22px] leading-none tracking-tight">KAS RT<span class="text-[#FF6B6B]">.</span><span class="ml-2 text-[10px] bg-emerald-500 text-white px-2 py-1 rounded-full">B-Firebase</span></h1>
         <p class="text-[11px] font-extrabold tracking-widest text-[#FF8E53] uppercase">TKR RT.02 / RW 07 • Mekarjaya</p>
       </div>
       <span class="hidden md:inline-flex ml-4 bg-[#06D6A0] text-white text-xs font-black px-3 py-1.5 rounded-full shadow-md">● ONLINE</span>
@@ -73,7 +72,7 @@ tailwind.config = {
         <img src="https://i.pravatar.cc/100?img=15" class="w-9 h-9 rounded-full object-cover border-2 border-[#FFD23F]">
         <div class="leading-tight">
           <p class="text-sm font-black">Pak Suryo</p>
-          <p class="text-[11px] font-bold text-gray-400">Ketua TKR RT.02</p>
+          <p class="text-[11px] font-bold text-gray-400">Ketua RT 05</p>
         </div>
         <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
       </div>
@@ -138,11 +137,11 @@ tailwind.config = {
             <div class="flex flex-wrap items-start justify-between gap-4">
               <div>
                 <p class="inline-flex items-center gap-2 bg-white/20 backdrop-blur px-3 py-1.5 rounded-full text-xs font-black tracking-widest">💰 SALDO KAS BERSAMA</p>
-                <h2 class="font-poppins font-extrabold text-[36px] sm:text-[48px] leading-none mt-3 tracking-tight" id="saldoDisplay">⏳ Loading Firebase...</h2>
+                <h2 class="font-poppins font-extrabold text-[36px] sm:text-[48px] leading-none mt-3 tracking-tight" id="saldoDisplay">⏳ Loading...</h2>
                 <p class="font-bold opacity-90 mt-1 flex items-center gap-2 text-sm"><span class="bg-white text-[#FF6B6B] px-2 py-0.5 rounded-full text-xs font-black">↑ 8.2%</span> dari bulan lalu • Update 8 Agu 2026</p>
               </div>
               <div class="bg-white rounded-2xl p-3 shadow-xl rotate-3 hidden sm:block">
-                <p class="text-[10px] font-black text-gray-400 tracking-widest">KAS TKR RT.02</p>
+                <p class="text-[10px] font-black text-gray-400 tracking-widest">KAS RT 05</p>
                 <p class="font-black text-[#2B2D42] text-sm">**** 4521</p>
                 <div class="flex gap-1 mt-2"><span class="w-6 h-1.5 bg-[#FF6B6B] rounded-full"></span><span class="w-6 h-1.5 bg-[#FFD23F] rounded-full"></span><span class="w-6 h-1.5 bg-[#06D6A0] rounded-full"></span></div>
               </div>
@@ -252,7 +251,7 @@ tailwind.config = {
     <section id="view-warga" class="hidden space-y-6">
       <div class="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 class="font-fredoka font-bold text-[28px] leading-none">Data Warga TKR RT.02</h2>
+          <h2 class="font-fredoka font-bold text-[28px] leading-none">Data Warga RT 05</h2>
           <p class="text-sm font-bold text-gray-400 mt-1">Kelola 24 kepala keluarga • Iuran Rp 50.000 / bulan</p>
         </div>
         <div class="flex gap-2">
@@ -489,7 +488,7 @@ tailwind.config = {
     <div class="bg-gradient-to-r from-[#06D6A0] to-[#06BEBB] p-6 text-white relative">
       <button onclick="closeModal('modalWarga')" class="absolute right-4 top-4 w-9 h-9 bg-white/20 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       <h3 class="font-fredoka font-bold text-2xl">Tambah Warga Baru</h3>
-      <p class="text-sm font-bold opacity-90">Data kepala keluarga TKR RT.02</p>
+      <p class="text-sm font-bold opacity-90">Data kepala keluarga RT 05</p>
     </div>
     <form id="formWarga" class="p-6 space-y-4">
       <div>
@@ -526,36 +525,26 @@ tailwind.config = {
 let warga = [];
 let transaksi = [];
 let tagihanFB = [];
-let jenisKasList = ["Kas Bulanan","Kas Keamanan","Kas Sosial / Kematian","KAS HUT RI"];
-
+const bulanNames = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu"];
 const firebaseConfig = { apiKey:"AIzaSyBbby_z2WVw02-1I9R-CPsQBCKzunLdROc", authDomain:"kas-rt02-tkr.firebaseapp.com", projectId:"kas-rt02-tkr", storageBucket:"kas-rt02-tkr.firebasestorage.app", messagingSenderId:"425411747451", appId:"1:425411747451:web:e5e7a8dcfd7256af28ccde" };
 if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-
 async function loadFirebase(){
   try{
     const snapW = await db.collection("warga").get();
-    const listW=[]; snapW.forEach(d=>{ const w=d.data(); listW.push({
-      id: w.id, nama: w.nama, rumah: w.blok, blok: (w.blok||'').replace(/[^A-Za-z]/g,'').charAt(0)||'C', hp: w.hp||'081234567800',
-      status: 'menunggak', warna: ["from-orange-400 to-pink-500","from-emerald-400 to-teal-500","from-violet-400 to-purple-500","from-blue-400 to-cyan-500","from-amber-400 to-orange-500"][Math.floor(Math.random()*5)],
-      nominal: w.nominal, orig: w
-    }); });
-    const snapT = await db.collection("tagihan").get();
-    tagihanFB=[]; snapT.forEach(d=> tagihanFB.push(d.data()));
-    const belumSet = new Set(tagihanFB.filter(x=>x.periode==="Agustus 2026" && x.status==="BELUM").map(x=>String(x.wargaId)));
-    listW.forEach(w=>{ if(belumSet.has(String(w.id))) w.status='menunggak'; else if(tagihanFB.some(x=>String(x.wargaId)===String(w.id))) w.status='lunas'; else w.status='menunggak'; });
-    if(listW.length) warga = listW;
-    const snapTr = await db.collection("transaksi").get();
-    const listTr=[]; snapTr.forEach(d=>{ const x=d.data(); listTr.push({id:x.id, tanggal:x.tanggal, kategori:x.kategori||x.jenisKas||"Lainnya", deskripsi:x.keterangan, tipe:(x.tipe==="MASUK"?"masuk":"keluar"), jumlah:Number(x.nominal)||0}); });
-    if(listTr.length) transaksi = listTr.sort((a,b)=> b.tanggal.localeCompare(a.tanggal));
-    const docKas = await db.collection("config").doc("jenisKas").get();
-    if(docKas.exists) jenisKasList = docKas.data().list;
-    console.log("Firebase OK", warga.length, transaksi.length);
-    loadFirebase();
-  }catch(e){ console.error(e); loadFirebase(); }
+    const listW=[]; snapW.forEach(d=>{ const w=d.data(); listW.push({id:w.id, nama:w.nama, rumah:w.blok, blok:(w.blok||'').charAt(0)||'C', hp:w.hp||'081234567800', status:'menunggak', warna:["from-orange-400 to-pink-500","from-emerald-400 to-teal-500","from-violet-400 to-purple-500","from-blue-400 to-cyan-500","from-amber-400 to-orange-500"][Math.floor(Math.random()*5)], nominal:w.nominal}); });
+    const snapT = await db.collection("tagihan").get(); tagihanFB=[]; snapT.forEach(d=>tagihanFB.push(d.data()));
+    const belumSet=new Set(tagihanFB.filter(x=>x.periode==="Agustus 2026"&&x.status==="BELUM").map(x=>String(x.wargaId)));
+    listW.forEach(w=>{ if(belumSet.has(String(w.id))) w.status='menunggak'; else if(tagihanFB.some(x=>String(x.wargaId)===String(w.id))) w.status='lunas'; });
+    if(listW.length) warga=listW;
+    const snapTr = await db.collection("transaksi").get(); const listTr=[]; snapTr.forEach(d=>{ const x=d.data(); listTr.push({id:x.id, tanggal:x.tanggal, kategori:x.kategori||x.jenisKas||"Lainnya", deskripsi:x.keterangan, tipe:(x.tipe==="MASUK"?"masuk":"keluar"), jumlah:Number(x.nominal)||0}); });
+    if(listTr.length) transaksi=listTr.sort((a,b)=>b.tanggal.localeCompare(a.tanggal));
+    console.log("Firebase OK",warga.length,transaksi.length,tagihanFB.length);
+  }catch(e){ console.error("Firebase error",e); }
+  loadFirebase();
 }
-
-const bulanNames = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu"];
+const bulanNames2 = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu"];
+ = ["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu"];
 
 // Helpers
 function formatRp(n){ return "Rp " + n.toLocaleString('id-ID'); }
@@ -803,7 +792,7 @@ function hapusTransaksi(id){
 function broadcastWA(){
   const list = warga.filter(w=>w.status==='menunggak').map(w=>w.nama).join(', ');
   if(!list) return showToast('Semua sudah lunas! 🎉');
-  window.open(`https://wa.me/?text=${encodeURIComponent('Halo warga TKR RT.02, mohon segera lunasi iuran Agustus Rp 50.000. Yang belum: '+list+' 🙏')}`,'_blank');
+  window.open(`https://wa.me/?text=${encodeURIComponent('Halo warga RT 05, mohon segera lunasi iuran Agustus Rp 50.000. Yang belum: '+list+' 🙏')}`,'_blank');
 }
 function generateIuran(){
   const nunggak = warga.filter(w=>w.status==='menunggak').length;
@@ -881,5 +870,5 @@ document.getElementById('globalSearch')?.addEventListener('input', (e)=>{
 document.querySelector('input[name="tanggal"]').valueAsDate = new Date();
 loadFirebase();
 </script>
-<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a27b831b5adf70b5',t:'MTc4NjE2MDU1Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
